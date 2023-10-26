@@ -4,11 +4,11 @@
     <h1>Form</h1>
     <form onsubmit="saveToLocalStorage(event)">
         <label> Name</label>
-        <input type="text" name="username" required />
+        <input id="name" type="text" name="username" required />
         <label> EmailId</label>
-        <input type="email" name="emailId" required />
+        <input id="email" type="email" name="emailId" required />
         <label> Phone Number</label>
-        <input type="tel" name="phonenumber" />
+        <input id="phno" type="tel" name="phonenumber" />
         <button> Submit </button><br>
 
     </form>
@@ -35,9 +35,13 @@
             //a.insertBefore(newText, b);
             //delete btn
             var deleteBtn = document.createElement('button');
+            var editBtn = document.createElement('button');
             deleteBtn.className = 'btn btn-sm float-right delete';
+            editBtn.className = 'btn btn-sm float-right';
             deleteBtn.appendChild(document.createTextNode('X'));
+            editBtn.appendChild(document.createTextNode('Edit'));
             //a.insertBefore(deleteBtn, b);
+            div.appendChild(editBtn);
             div.appendChild(deleteBtn);
             //a.insertBefore(linebreak, b);
             div.appendChild(linebreak);
@@ -65,6 +69,25 @@
                     localStorage.removeItem(n[n.length - 2]);
                 }
             }
+            else if (e.target.classList.contains('btn-sm')) {
+                var div = e.target.parentElement;
+                body.removeChild(div);
+                console.log(div);
+                var words = div.firstChild.wholeText;
+
+                var n = words.split(" ");
+                //console.log(n[n.length - 2]);
+                localStorage.removeItem(n[n.length - 2]);
+                var name = document.getElementById('name');
+                name.value = n[0];
+                var email = document.getElementById('email');
+                email.value = n[1];
+                var phno = document.getElementById('phno');
+                phno.value = n[2];
+
+
+            }
+
         }
 
     </script>
