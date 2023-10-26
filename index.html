@@ -1,16 +1,18 @@
 <html>
 
-<body>
+<body id="a">
     <h1>Form</h1>
     <form onsubmit="saveToLocalStorage(event)">
         <label> Name</label>
-        <input type="text" name="username" required /><br>
+        <input type="text" name="username" required />
         <label> EmailId</label>
-        <input type="email" name="emailId" required /><br>
+        <input type="email" name="emailId" required />
         <label> Phone Number</label>
-        <input type="tel" name="phonenumber" /><br>
-        <button> Submit </button>
+        <input type="tel" name="phonenumber" />
+        <button> Submit </button><br>
+
     </form>
+    <p id="b"></p>
     <script>
         function saveToLocalStorage(e) {
             e.preventDefault();
@@ -20,12 +22,20 @@
             localStorage.setItem('name', name);
             localStorage.setItem('email', email);
             localStorage.setItem('phonenumber', phonenumber);
+            var newText = document.createTextNode(name + ' ' + email + ' ' + phonenumber);
+            // Add text to div
+            var a = document.querySelector('#a');
+            var b = document.querySelector('#b');
+            linebreak = document.createElement("br");
+
+            a.insertBefore(newText, b);
+            a.insertBefore(linebreak, b);
             const obj = {
                 name: name,
                 email: email,
                 phonenumber: phonenumber
             }
-            localStorage.setItem("user", JSON.stringify(obj));
+            localStorage.setItem(phonenumber, JSON.stringify(obj));
         }
     </script>
 </body>
