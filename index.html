@@ -15,6 +15,8 @@
     <p id="b"></p>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.0/axios.min.js"></script>
     <script>
+        var s = 0;
+        var oldid;
         var body = document.getElementById('a');
         body.addEventListener('click', removeItem);
         function saveToLocalStorage(e) {
@@ -31,12 +33,23 @@
                 email: email,
                 phonenumber: phonenumber
             }
-            showNewUserOnScreen(obj)
-            axios.post("https://crudcrud.com/api/5de19888f54c4a5a9765d1627b28a222/data1", obj).then(res => { console.log(res) }).catch(err => { console.log(err) });
+            if (s == 1) {
+                s = 0;
+                var name1 = document.getElementById('name');
+                name1.value = '';
+                var email1 = document.getElementById('email');
+                email1.value = '';
+                var phno1 = document.getElementById('phno');
+                phno1.value = '';
+                axios.put(`https://crudcrud.com/api/e1804fb96248451a9cd04bf1c2cf5d3a/data2/${oldid}`, obj).then(res => { showNewUserOnScreen(obj, oldid) }).catch(err => { console.log(err) });
+            }
+            else {
+                axios.post("https://crudcrud.com/api/e1804fb96248451a9cd04bf1c2cf5d3a/data2", obj).then(res => { showNewUserOnScreen(obj) }).catch(err => { console.log(err) });
+            }
             //localStorage.setItem(phonenumber, JSON.stringify(obj));
         }
         window.addEventListener("DOMContentLoaded", () => {
-            axios.get("https://crudcrud.com/api/5de19888f54c4a5a9765d1627b28a222/data1").then(res => {
+            axios.get("https://crudcrud.com/api/e1804fb96248451a9cd04bf1c2cf5d3a/data2").then(res => {
                 console.log(res, res.data[0], res.data[0]['phonenumber']);
                 for (var i = 0; res.data.length; i++) {
 
@@ -56,8 +69,11 @@
             // }
         })
         //show user on screen
-        function showNewUserOnScreen(obj) {
-            var newText = document.createTextNode(obj['name'] + ' ' + obj['email'] + ' ' + obj["phonenumber"] + ' ' + obj["_id"] + ' ');
+        function showNewUserOnScreen(obj, id = '1qazx234rfvrrf') {
+            if (obj['_id']) {
+                id = obj['_id']
+            }
+            var newText = document.createTextNode(obj['name'] + ' ' + obj['email'] + ' ' + obj["phonenumber"] + ' ' + id + ' ');
 
             // Add text to div
             var a = document.querySelector('#a');
@@ -91,8 +107,8 @@
 
                     var n = words.split(" ");
                     console.log(n[n.length - 2]);
-                    var id = n[n.length - 2]
-                    axios.delete(`https://crudcrud.com/api/5de19888f54c4a5a9765d1627b28a222/data1/${id}`)
+                    var id = n[n.length - 2];
+                    axios.delete(`https://crudcrud.com/api/e1804fb96248451a9cd04bf1c2cf5d3a/data2/${id}`);
                     //localStorage.removeItem(n[n.length - 2]);
                 }
             }
@@ -111,6 +127,14 @@
                 email.value = n[1];
                 var phno = document.getElementById('phno');
                 phno.value = n[2];
+                s = 1;
+                oldid = n[n.length - 2];
+                //var id = n[n.length - 2];
+                // axios.put(`https://crudcrud.com/api/5de19888f54c4a5a9765d1627b28a222/data1/${id}`, {
+                //     name: name,
+                //     email: email,
+                //     phonenumber: phno
+                // });
 
 
             }
