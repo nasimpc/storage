@@ -13,6 +13,7 @@
 
     </form>
     <p id="b"></p>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.0/axios.min.js"></script>
     <script>
         var body = document.getElementById('a');
         body.addEventListener('click', removeItem);
@@ -53,7 +54,8 @@
                 email: email,
                 phonenumber: phonenumber
             }
-            localStorage.setItem(phonenumber, JSON.stringify(obj));
+            axios.post("https://crudcrud.com/api/5de19888f54c4a5a9765d1627b28a222/data", obj).then(res => { console.log(res) }).catch(err => { console.log(err) });
+            //localStorage.setItem(phonenumber, JSON.stringify(obj));
         }
         // Remove item
         function removeItem(e) {
