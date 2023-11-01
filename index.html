@@ -25,7 +25,39 @@
             //localStorage.setItem('name', name);
             //localStorage.setItem('email', email);
             //localStorage.setItem('phonenumber', phonenumber);
-            var newText = document.createTextNode(name + ' ' + email + ' ' + phonenumber + ' ');
+
+            const obj = {
+                name: name,
+                email: email,
+                phonenumber: phonenumber
+            }
+            //showNewUserOnScreen(obj)
+            axios.post("https://crudcrud.com/api/5de19888f54c4a5a9765d1627b28a222/data1", obj).then(res => { console.log(res) }).catch(err => { console.log(err) });
+            //localStorage.setItem(phonenumber, JSON.stringify(obj));
+        }
+        window.addEventListener("DOMContentLoaded", () => {
+            axios.get("https://crudcrud.com/api/5de19888f54c4a5a9765d1627b28a222/data1").then(res => {
+                //console.log(res, res.data[0], res.data[0]['phonenumber']);
+                for (var i = 0; res.data.length; i++) {
+
+                    showNewUserOnScreen(res.data[i])
+                }
+
+            })
+
+            // const localStorageObj = localStorage;
+            // const localstoragekeys = Object.keys(localStorageObj)
+
+            // for (var i = 0; i < localstoragekeys.length; i++) {
+            //     const key = localstoragekeys[i]
+            //     const userDetailsString = localStorageObj[key];
+            //     const userDetailsObj = JSON.parse(userDetailsString);
+            //     showNewUserOnScreen(userDetailsObj)
+            // }
+        })
+        //show user on screen
+        function showNewUserOnScreen(obj) {
+            var newText = document.createTextNode(obj['name'] + ' ' + obj['email'] + ' ' + obj["phonenumber"] + ' ');
 
             // Add text to div
             var a = document.querySelector('#a');
@@ -47,15 +79,6 @@
             //a.insertBefore(linebreak, b);
             div.appendChild(linebreak);
             a.insertBefore(div, b);
-
-
-            const obj = {
-                name: name,
-                email: email,
-                phonenumber: phonenumber
-            }
-            axios.post("https://crudcrud.com/api/5de19888f54c4a5a9765d1627b28a222/data", obj).then(res => { console.log(res) }).catch(err => { console.log(err) });
-            //localStorage.setItem(phonenumber, JSON.stringify(obj));
         }
         // Remove item
         function removeItem(e) {
