@@ -31,13 +31,13 @@
                 email: email,
                 phonenumber: phonenumber
             }
-            //showNewUserOnScreen(obj)
+            showNewUserOnScreen(obj)
             axios.post("https://crudcrud.com/api/5de19888f54c4a5a9765d1627b28a222/data1", obj).then(res => { console.log(res) }).catch(err => { console.log(err) });
             //localStorage.setItem(phonenumber, JSON.stringify(obj));
         }
         window.addEventListener("DOMContentLoaded", () => {
             axios.get("https://crudcrud.com/api/5de19888f54c4a5a9765d1627b28a222/data1").then(res => {
-                //console.log(res, res.data[0], res.data[0]['phonenumber']);
+                console.log(res, res.data[0], res.data[0]['phonenumber']);
                 for (var i = 0; res.data.length; i++) {
 
                     showNewUserOnScreen(res.data[i])
@@ -57,7 +57,7 @@
         })
         //show user on screen
         function showNewUserOnScreen(obj) {
-            var newText = document.createTextNode(obj['name'] + ' ' + obj['email'] + ' ' + obj["phonenumber"] + ' ');
+            var newText = document.createTextNode(obj['name'] + ' ' + obj['email'] + ' ' + obj["phonenumber"] + ' ' + obj["_id"] + ' ');
 
             // Add text to div
             var a = document.querySelector('#a');
@@ -90,8 +90,10 @@
                     var words = div.firstChild.wholeText;
 
                     var n = words.split(" ");
-                    //console.log(n[n.length - 2]);
-                    localStorage.removeItem(n[n.length - 2]);
+                    console.log(n[n.length - 2]);
+                    var id = n[n.length - 2]
+                    axios.delete(`https://crudcrud.com/api/5de19888f54c4a5a9765d1627b28a222/data1/${id}`)
+                    //localStorage.removeItem(n[n.length - 2]);
                 }
             }
             else if (e.target.classList.contains('btn-sm')) {
