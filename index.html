@@ -44,7 +44,7 @@
                 axios.put(`https://crudcrud.com/api/e1804fb96248451a9cd04bf1c2cf5d3a/data2/${oldid}`, obj).then(res => { showNewUserOnScreen(obj, oldid) }).catch(err => { console.log(err) });
             }
             else {
-                axios.post("https://crudcrud.com/api/e1804fb96248451a9cd04bf1c2cf5d3a/data2", obj).then(res => { showNewUserOnScreen(obj) }).catch(err => { console.log(err) });
+                axios.post("https://crudcrud.com/api/e1804fb96248451a9cd04bf1c2cf5d3a/data2", obj).then(res => { showNewUserOnScreen(res.data) }).catch(err => { console.log(err) });
             }
             //localStorage.setItem(phonenumber, JSON.stringify(obj));
         }
