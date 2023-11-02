@@ -3,13 +3,15 @@
 <body id="a">
     <h1>Form</h1>
     <form onsubmit="saveToLocalStorage(event)">
-        <label> Name</label>
-        <input id="name" type="text" name="username" required />
-        <label> EmailId</label>
-        <input id="email" type="email" name="emailId" required />
-        <label> Phone Number</label>
-        <input id="phno" type="tel" name="phonenumber" />
-        <button> Submit </button><br>
+        <label> Candy Name</label>
+        <input id="name" type="text" name="name" required />
+        <label> Description</label>
+        <input id="description" type="text" name="description" required />
+        <label> price</label>
+        <input id="price" type="number" name="price" />
+        <label> Quantity</label>
+        <input id="quantity" type="number" name="quantity" />
+        <button> Add Item </button><br>
 
     </form>
     <p id="b"></p>
@@ -21,36 +23,25 @@
         body.addEventListener('click', removeItem);
         function saveToLocalStorage(e) {
             e.preventDefault();
-            const name = event.target.username.value;
-            const email = event.target.emailId.value;
-            const phonenumber = event.target.phonenumber.value;
-            //localStorage.setItem('name', name);
-            //localStorage.setItem('email', email);
-            //localStorage.setItem('phonenumber', phonenumber);
+            const name = event.target.name.value;
+            const description = event.target.description.value;
+            const price = event.target.price.value;
+            const quantity = event.target.quantity.value;
+
 
             const obj = {
                 name: name,
-                email: email,
-                phonenumber: phonenumber
+                description: description,
+                price: price,
+                quantity: quantity
             }
-            if (s == 1) {
-                s = 0;
-                var name1 = document.getElementById('name');
-                name1.value = '';
-                var email1 = document.getElementById('email');
-                email1.value = '';
-                var phno1 = document.getElementById('phno');
-                phno1.value = '';
-                axios.put(`https://crudcrud.com/api/e1804fb96248451a9cd04bf1c2cf5d3a/data2/${oldid}`, obj).then(res => { showNewUserOnScreen(obj, oldid) }).catch(err => { console.log(err) });
-            }
-            else {
-                axios.post("https://crudcrud.com/api/e1804fb96248451a9cd04bf1c2cf5d3a/data2", obj).then(res => { showNewUserOnScreen(res.data) }).catch(err => { console.log(err) });
-            }
-            //localStorage.setItem(phonenumber, JSON.stringify(obj));
+
+            axios.post("https://crudcrud.com/api/daa8c3f1d3574fbfb6c0f3e8eae9e04d/exam", obj).then(res => { showNewUserOnScreen(res.data) }).catch(err => { console.log(err) });
+
         }
         window.addEventListener("DOMContentLoaded", () => {
-            axios.get("https://crudcrud.com/api/e1804fb96248451a9cd04bf1c2cf5d3a/data2").then(res => {
-                console.log(res, res.data[0], res.data[0]['phonenumber']);
+            axios.get("https://crudcrud.com/api/daa8c3f1d3574fbfb6c0f3e8eae9e04d/exam").then(res => {
+
                 for (var i = 0; res.data.length; i++) {
 
                     showNewUserOnScreen(res.data[i])
@@ -58,22 +49,13 @@
 
             })
 
-            // const localStorageObj = localStorage;
-            // const localstoragekeys = Object.keys(localStorageObj)
-
-            // for (var i = 0; i < localstoragekeys.length; i++) {
-            //     const key = localstoragekeys[i]
-            //     const userDetailsString = localStorageObj[key];
-            //     const userDetailsObj = JSON.parse(userDetailsString);
-            //     showNewUserOnScreen(userDetailsObj)
-            // }
         })
         //show user on screen
         function showNewUserOnScreen(obj, id = '1qazx234rfvrrf') {
             if (obj['_id']) {
                 id = obj['_id']
             }
-            var newText = document.createTextNode(obj['name'] + ' ' + obj['email'] + ' ' + obj["phonenumber"] + ' ' + id + ' ');
+            var newText = document.createTextNode(obj['name'] + ' ' + obj['description'] + ' ' + obj['price'] + ' ' + obj["quantity"] + ' ' + id + ' ');
 
             // Add text to div
             var a = document.querySelector('#a');
@@ -81,16 +63,31 @@
             linebreak = document.createElement("br");
             var div = document.createElement('div');
             div.appendChild(newText);
-            //a.insertBefore(newText, b);
+
             //delete btn
             var deleteBtn = document.createElement('button');
-            var editBtn = document.createElement('button');
+
+            var editBtn1 = document.createElement('button');
+            var editBtn2 = document.createElement('button');
+            var editBtn3 = document.createElement('button');
+
             deleteBtn.className = 'btn btn-sm float-right delete';
-            editBtn.className = 'btn btn-sm float-right';
+
+            editBtn1.className = 'btn btn-sm float-right';
+            editBtn2.className = 'btn btn-sm float-right';
+            editBtn3.className = 'btn btn-sm float-right';
+
             deleteBtn.appendChild(document.createTextNode('X'));
-            editBtn.appendChild(document.createTextNode('Edit'));
+
+            editBtn1.appendChild(document.createTextNode('Buy1'));
+            editBtn2.appendChild(document.createTextNode('Buy2'));
+            editBtn3.appendChild(document.createTextNode('Buy3'));
+
             //a.insertBefore(deleteBtn, b);
-            div.appendChild(editBtn);
+            div.appendChild(editBtn1);
+            div.appendChild(editBtn2);
+            div.appendChild(editBtn3);
+
             div.appendChild(deleteBtn);
             //a.insertBefore(linebreak, b);
             div.appendChild(linebreak);
@@ -108,33 +105,46 @@
                     var n = words.split(" ");
                     console.log(n[n.length - 2]);
                     var id = n[n.length - 2];
-                    axios.delete(`https://crudcrud.com/api/e1804fb96248451a9cd04bf1c2cf5d3a/data2/${id}`);
+                    axios.delete(`https://crudcrud.com/api/daa8c3f1d3574fbfb6c0f3e8eae9e04d/exam/${id}`);
                     //localStorage.removeItem(n[n.length - 2]);
                 }
             }
             else if (e.target.classList.contains('btn-sm')) {
-                var div = e.target.parentElement;
-                body.removeChild(div);
-                console.log(div);
-                var words = div.firstChild.wholeText;
 
-                var n = words.split(" ");
-                //console.log(n[n.length - 2]);
-                localStorage.removeItem(n[n.length - 2]);
-                var name = document.getElementById('name');
-                name.value = n[0];
-                var email = document.getElementById('email');
-                email.value = n[1];
-                var phno = document.getElementById('phno');
-                phno.value = n[2];
-                s = 1;
-                oldid = n[n.length - 2];
-                //var id = n[n.length - 2];
-                // axios.put(`https://crudcrud.com/api/5de19888f54c4a5a9765d1627b28a222/data1/${id}`, {
-                //     name: name,
-                //     email: email,
-                //     phonenumber: phno
-                // });
+                var div = e.target.parentElement;
+
+
+                var wordsWhole = div.firstChild.wholeText;
+
+
+                var words = wordsWhole.split(" ");
+
+
+                if ((e.target.innerText == 'Buy1' && words[3] < 1) || (e.target.innerText == 'Buy2' && words[3] < 2) || (e.target.innerText == 'Buy3' && words[3] < 3)) {
+                    alert("Not avilable");
+                }
+                else {
+                    body.removeChild(div);
+
+                    var id = words[words.length - 2];
+                    const obj = {
+                        name: words[0],
+                        description: words[1],
+                        price: words[2],
+                        quantity: words[3] - 1
+                    }
+
+                    if (e.target.innerText == 'Buy2') {
+                        obj.quantity = words[3] - 2;
+
+                    }
+                    else if (e.target.innerText == 'Buy3') {
+                        obj.quantity = words[3] - 3;
+
+                    }
+                    showNewUserOnScreen(obj, id);
+                    axios.put(`https://crudcrud.com/api/daa8c3f1d3574fbfb6c0f3e8eae9e04d/exam/${id}`, obj)
+                }
 
 
             }
