@@ -17,8 +17,7 @@
     <p id="b"></p>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.0/axios.min.js"></script>
     <script>
-        var s = 0;
-        var oldid;
+
         var body = document.getElementById('a');
         body.addEventListener('click', removeItem);
         function saveToLocalStorage(e) {
@@ -28,40 +27,34 @@
             const price = event.target.price.value;
             const quantity = event.target.quantity.value;
 
-
             const obj = {
                 name: name,
                 description: description,
                 price: price,
                 quantity: quantity
             }
-
-            axios.post("https://crudcrud.com/api/daa8c3f1d3574fbfb6c0f3e8eae9e04d/exam", obj).then(res => { showNewUserOnScreen(res.data) }).catch(err => { console.log(err) });
-
+            axios.post("https://crudcrud.com/api/9946d907e3b649ffb023bc1d5c5f8424/exam", obj).then(res => { showNewUserOnScreen(res.data) }).catch(err => { console.log(err) });
         }
         window.addEventListener("DOMContentLoaded", () => {
-            axios.get("https://crudcrud.com/api/daa8c3f1d3574fbfb6c0f3e8eae9e04d/exam").then(res => {
-
+            axios.get("https://crudcrud.com/api/9946d907e3b649ffb023bc1d5c5f8424/exam").then(res => {
                 for (var i = 0; res.data.length; i++) {
-
                     showNewUserOnScreen(res.data[i])
                 }
-
             })
-
         })
         //show user on screen
-        function showNewUserOnScreen(obj, id = '1qazx234rfvrrf') {
+        function showNewUserOnScreen(obj, ID = '1qazx234rfvrrf') {
             if (obj['_id']) {
-                id = obj['_id']
+                ID = obj['_id']
             }
-            var newText = document.createTextNode(obj['name'] + ' ' + obj['description'] + ' ' + obj['price'] + ' ' + obj["quantity"] + ' ' + id + ' ');
+            var newText = document.createTextNode(obj['name'] + ' ' + obj['description'] + ' ' + obj['price'] + ' ' + obj["quantity"] + ' ');
 
             // Add text to div
             var a = document.querySelector('#a');
             var b = document.querySelector('#b');
             linebreak = document.createElement("br");
             var div = document.createElement('div');
+            div.id = ID;
             div.appendChild(newText);
 
             //delete btn
@@ -83,14 +76,12 @@
             editBtn2.appendChild(document.createTextNode('Buy2'));
             editBtn3.appendChild(document.createTextNode('Buy3'));
 
-            //a.insertBefore(deleteBtn, b);
             div.appendChild(editBtn1);
             div.appendChild(editBtn2);
             div.appendChild(editBtn3);
-
             div.appendChild(deleteBtn);
-            //a.insertBefore(linebreak, b);
             div.appendChild(linebreak);
+
             a.insertBefore(div, b);
         }
         // Remove item
@@ -99,56 +90,38 @@
                 if (confirm('Are You Sure?')) {
                     var div = e.target.parentElement;
                     body.removeChild(div);
-                    console.log(div);
-                    var words = div.firstChild.wholeText;
-
-                    var n = words.split(" ");
-                    console.log(n[n.length - 2]);
-                    var id = n[n.length - 2];
-                    axios.delete(`https://crudcrud.com/api/daa8c3f1d3574fbfb6c0f3e8eae9e04d/exam/${id}`);
-                    //localStorage.removeItem(n[n.length - 2]);
+                    var id = div.id;
+                    axios.delete(`https://crudcrud.com/api/9946d907e3b649ffb023bc1d5c5f8424/exam/${id}`);
                 }
             }
             else if (e.target.classList.contains('btn-sm')) {
 
                 var div = e.target.parentElement;
-
-
+                var id = div.id;
                 var wordsWhole = div.firstChild.wholeText;
-
-
                 var words = wordsWhole.split(" ");
-
 
                 if ((e.target.innerText == 'Buy1' && words[3] < 1) || (e.target.innerText == 'Buy2' && words[3] < 2) || (e.target.innerText == 'Buy3' && words[3] < 3)) {
                     alert("Not avilable");
                 }
                 else {
                     body.removeChild(div);
-
-                    var id = words[words.length - 2];
                     const obj = {
                         name: words[0],
                         description: words[1],
                         price: words[2],
                         quantity: words[3] - 1
                     }
-
                     if (e.target.innerText == 'Buy2') {
                         obj.quantity = words[3] - 2;
-
                     }
                     else if (e.target.innerText == 'Buy3') {
                         obj.quantity = words[3] - 3;
-
                     }
                     showNewUserOnScreen(obj, id);
-                    axios.put(`https://crudcrud.com/api/daa8c3f1d3574fbfb6c0f3e8eae9e04d/exam/${id}`, obj)
+                    axios.put(`https://crudcrud.com/api/9946d907e3b649ffb023bc1d5c5f8424/exam/${id}`, obj)
                 }
-
-
             }
-
         }
 
     </script>
