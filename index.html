@@ -2,7 +2,7 @@
 
 <body id="a">
     <h1>Form</h1>
-    <form onsubmit="saveToLocalStorage(event)">
+    <form onsubmit="saveToStorage(event)">
         <label> Candy Name</label>
         <input id="name" type="text" name="name" required />
         <label> Description</label>
@@ -19,8 +19,9 @@
     <script>
 
         var body = document.getElementById('a');
-        body.addEventListener('click', removeItem);
-        function saveToLocalStorage(e) {
+        body.addEventListener('click', editItem);
+
+        function saveToStorage(e) {
             e.preventDefault();
             const name = event.target.name.value;
             const description = event.target.description.value;
@@ -42,7 +43,8 @@
                 }
             })
         })
-        //show user on screen
+
+        //show details on screen
         function showNewUserOnScreen(obj, ID = '1qazx234rfvrrf') {
             if (obj['_id']) {
                 ID = obj['_id']
@@ -85,11 +87,12 @@
             a.insertBefore(div, b);
         }
         // Remove item
-        function removeItem(e) {
+        function editItem(e) {
             if (e.target.classList.contains('delete')) {
                 if (confirm('Are You Sure?')) {
                     var div = e.target.parentElement;
                     body.removeChild(div);
+
                     var id = div.id;
                     axios.delete(`https://crudcrud.com/api/9946d907e3b649ffb023bc1d5c5f8424/exam/${id}`);
                 }
@@ -98,12 +101,12 @@
 
                 var div = e.target.parentElement;
                 var id = div.id;
-                var wordsWhole = div.firstChild.wholeText;
-                var words = wordsWhole.split(" ");
+                var words = div.firstChild.wholeText.split(" ");
 
                 if ((e.target.innerText == 'Buy1' && words[3] < 1) || (e.target.innerText == 'Buy2' && words[3] < 2) || (e.target.innerText == 'Buy3' && words[3] < 3)) {
                     alert("Not avilable");
                 }
+
                 else {
                     body.removeChild(div);
                     const obj = {
