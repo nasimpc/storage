@@ -21,7 +21,8 @@
         var body = document.getElementById('a');
         body.addEventListener('click', editItem);
 
-        function saveToStorage(e) {
+
+        async function saveToStorage(e) {
             e.preventDefault();
             const name = event.target.name.value;
             const description = event.target.description.value;
@@ -34,14 +35,19 @@
                 price: price,
                 quantity: quantity
             }
-            axios.post("https://crudcrud.com/api/9946d907e3b649ffb023bc1d5c5f8424/exam", obj).then(res => { showNewUserOnScreen(res.data) }).catch(err => { console.log(err) });
+            const postDetails = axios.post("https://crudcrud.com/api/f3dd528908db4ddf9a52ded1320e7d0e/candy", obj);
+            let res = await postDetails;
+            showNewUserOnScreen(res.data)
         }
-        window.addEventListener("DOMContentLoaded", () => {
-            axios.get("https://crudcrud.com/api/9946d907e3b649ffb023bc1d5c5f8424/exam").then(res => {
-                for (var i = 0; res.data.length; i++) {
-                    showNewUserOnScreen(res.data[i])
-                }
-            })
+        window.addEventListener("DOMContentLoaded", async () => {
+            const getDetails = axios.get("https://crudcrud.com/api/f3dd528908db4ddf9a52ded1320e7d0e/candy")
+
+            let res = await getDetails;
+            for (var i = 0; res.data.length; i++) {
+
+                showNewUserOnScreen(res.data[i])
+            }
+
         })
 
         //show details on screen
@@ -94,7 +100,7 @@
                     body.removeChild(div);
 
                     var id = div.id;
-                    axios.delete(`https://crudcrud.com/api/9946d907e3b649ffb023bc1d5c5f8424/exam/${id}`);
+                    axios.delete(`https://crudcrud.com/api/f3dd528908db4ddf9a52ded1320e7d0e/candy/${id}`);
                 }
             }
             else if (e.target.classList.contains('btn-sm')) {
@@ -122,7 +128,7 @@
                         obj.quantity = words[3] - 3;
                     }
                     showNewUserOnScreen(obj, id);
-                    axios.put(`https://crudcrud.com/api/9946d907e3b649ffb023bc1d5c5f8424/exam/${id}`, obj)
+                    axios.put(`https://crudcrud.com/api/f3dd528908db4ddf9a52ded1320e7d0e/candy/${id}`, obj)
                 }
             }
         }
